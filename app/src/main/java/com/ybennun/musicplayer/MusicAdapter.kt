@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 class MusicAdapter(var musicList: MutableList<Music>) :
     RecyclerView.Adapter<MusicAdapter.MusicViewHolder>() {
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MusicViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): MusicViewHolder {
         val context = viewGroup.context
         val inflater = LayoutInflater.from(context)
         val shouldAttachToParentImmediately = false
@@ -31,12 +31,10 @@ class MusicAdapter(var musicList: MutableList<Music>) :
     class MusicViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
         private lateinit var music: Music
-        private var artistName: TextView
-        private var songName: TextView
+        private var artistName: TextView = view.findViewById(R.id.artist_text_view)
+        private var songName: TextView = view.findViewById(R.id.song_text_view)
 
         init {
-            artistName = view.findViewById(R.id.artist_text_view)
-            songName = view.findViewById(R.id.song_text_view)
 
             view.setOnClickListener(this)
         }
