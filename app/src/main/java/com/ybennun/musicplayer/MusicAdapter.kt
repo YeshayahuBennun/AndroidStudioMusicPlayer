@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MusicAdapter(var musicList: MutableList<Music>) :
-    RecyclerView.Adapter<MusicAdapter.MusicViewHolder>() {
+class MusicAdapter(private var musicList: MutableList<Music>,private var itemClicked: ItemClicked) :  RecyclerView.Adapter<MusicAdapter.MusicViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, p1: Int): MusicViewHolder {
         val context = viewGroup.context
@@ -28,7 +27,7 @@ class MusicAdapter(var musicList: MutableList<Music>) :
         holder.bindMusic(item)
     }
 
-    class MusicViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+    inner class MusicViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
         private lateinit var music: Music
         private var artistName: TextView = view.findViewById(R.id.artist_text_view)
@@ -47,7 +46,7 @@ class MusicAdapter(var musicList: MutableList<Music>) :
         }
 
         override fun onClick(v: View?) {
-            TODO("Not yet implemented")
+            itemClicked.itemClicked(adapterPosition)
         }
     }
 }
