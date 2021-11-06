@@ -8,11 +8,14 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_music_player.*
+import java.util.concurrent.TimeUnit
+
 
 class MusicPlayerActivity : AppCompatActivity(), ItemClicked {
 
@@ -62,12 +65,44 @@ class MusicPlayerActivity : AppCompatActivity(), ItemClicked {
                 prepare()
                 start()
             }
+
+            val mHandler = Handler()
+            this@MusicPlayerActivity.runOnUiThread(object : Runnable {
+                override fun run() {
+                    val playerPosition = mediaPlayer?.currentPosition!! / 1000
+                    val totalDuration = mediaPlayer?.duration!! / 1000
+
+                    seek_bar.max = totalDuration
+                    seek_bar.progress = playerPosition
+
+                    past_text_view.text = timerFormat(playerPosition.toLong())
+                    remain_text_view.text = timerFormat((totalDuration - playerPosition).toLong())
+
+                    mHandler.postDelayed(this, 1000)
+                }
+
+            })
         } else {
             state = false
             mediaPlayer?.stop()
             fab_play.setImageDrawable(resources.getDrawable(R.drawable.ic_play_arrow))
         }
 
+    }
+
+    fun timerFormat(time: Long): String {
+        val result = String.format(
+            "%2d:%02d",
+            TimeUnit.SECONDS.toMinutes(time),
+            TimeUnit.SECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(
+                TimeUnit.SECONDS.toMinutes(time)
+            )
+        )
+        var convert = ""
+
+        for (i in 0 until result.length)
+            convert += result
+        return convert
     }
 
     private fun getSongs() {
