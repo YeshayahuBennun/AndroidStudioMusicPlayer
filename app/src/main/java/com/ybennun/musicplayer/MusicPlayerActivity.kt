@@ -50,7 +50,22 @@ class MusicPlayerActivity : AppCompatActivity(), ItemClicked {
 
         fab_play.setOnClickListener() {
             play(currPosition)
+        }
 
+        fab_next.setOnClickListener {
+            mediaPlayer?.stop()
+            state = false
+            if (currPosition < musicList.size - 1)
+                currPosition += 1
+            play(currPosition)
+        }
+
+        fab_previous.setOnClickListener{
+            mediaPlayer?.stop()
+            state = false
+            if(currPosition>0)
+                currPosition-=1
+            play(currPosition)
         }
     }
 
