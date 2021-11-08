@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -60,13 +61,28 @@ class MusicPlayerActivity : AppCompatActivity(), ItemClicked {
             play(currPosition)
         }
 
-        fab_previous.setOnClickListener{
+        fab_previous.setOnClickListener {
             mediaPlayer?.stop()
             state = false
-            if(currPosition>0)
-                currPosition-=1
+            if (currPosition > 0)
+                currPosition -= 1
             play(currPosition)
         }
+
+        seek_bar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+
+                if (fromUser) {
+                    mediaPlayer?.seekTo(progress * 1000)
+                }
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+        })
     }
 
     private fun play(currPosition: Int) {
